@@ -19,48 +19,42 @@ form.onsubmit = (e) => {
     let fd = new FormData(form)
     let obj = { 'id': Math.random() }
     fd.forEach((key, value) => obj[value] = key)
+    checkInps(inps)
     if (obj.name && obj.age !== '') {
         arr.push(obj)
         reload(arr, table)
-    } else {
-        inps.forEach(el => el.classList.add('empty_input'))
+        delBorder(inps)
     }
 }
-
 changeBtn.onclick = () => {
     let nameKey = nameChangeInp.value
     let ageKey = ageChangeInp.value
     let filtered = arr.find(el => el.id === changeID)
     if (nameKey !== "") {
         filtered.name = nameKey
+        delBorder(changeInps)
         modalToggle()
         reload(arr, table)
-        changeInps.forEach(el => {
-            el.value = ''
-            el.classList.remove('empty_input')
-        })
-    }
-    if (ageKey !== "") {
+        return
+    } else if (ageKey !== "") {
         filtered.age = ageKey
+        delBorder(changeInps)
         modalToggle()
         reload(arr, table)
-        changeInps.forEach(el => {
-            el.value = ''
-            el.classList.remove('empty_input')
-        })
-    } else {
-        changeInps.forEach(el => el.classList.add('empty_input'))
+        return
     }
+    addBorder(changeInps)
 }
-
 closeBtns.forEach(el => {
     el.onclick = () => {
-        console.log('works');
+        changeInps.forEach(item => item.classList.remove('empty_input'))
         modalToggle()
     }
 })
 
-console.log(closeBtns);
+tableHeadCreate(table)
+
+
 
 function reload(data, place) {
     place.innerHTML = ''
@@ -105,7 +99,6 @@ function reload(data, place) {
         }
     }
 }
-
 function tableHeadCreate(place) {
     let tr = document.createElement('tr')
     let No = document.createElement('th')
@@ -120,7 +113,31 @@ function tableHeadCreate(place) {
     tr.append(No, sName, birth, act)
     place.append(tr)
 }
-tableHeadCreate(table)
 function modalToggle() {
     modal.classList.contains('modal_act') ? modal.classList.remove('modal_act') : modal.classList.add('modal_act')
+}
+function checkInps(arr) {
+    arr.forEach(el => {
+        if (el.value === '') {
+            el.classList.add('empty_input')
+        } else {
+            el.classList.remove('empty_input')
+        }
+        el.onkeyup = () => {
+            if (el.value === '') {
+                el.classList.add('empty_input')
+            } else {
+                el.classList.remove('empty_input')
+            }
+        }
+    })
+}
+function delBorder(arr) {
+    arr.forEach(el => {
+        el.classList.remove('empty_input')
+        el.value = ''
+    })
+}
+function addBorder(arr) {
+    arr.forEach(el => el.classList.add('empty_input'))
 }
