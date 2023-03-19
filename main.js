@@ -53,9 +53,14 @@ changeBtn.onclick = () => {
     }
 }
 
-closeBtns.onclick = () => {
-    modalToggle()
-}
+closeBtns.forEach(el => {
+    el.onclick = () => {
+        console.log('works');
+        modalToggle()
+    }
+})
+
+console.log(closeBtns);
 
 function reload(data, place) {
     place.innerHTML = ''
